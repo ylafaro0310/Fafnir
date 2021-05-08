@@ -14,7 +14,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Interactable
   - Chara
   - 
   - 
@@ -49,4 +49,7 @@ TagManager:
     locked: 0
   - name: Chara
     uniqueID: 205321893
+    locked: 0
+  - name: UI
+    uniqueID: 137462975
     locked: 0
