@@ -20,7 +20,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Dialogue
   - 
   - 
   - 
@@ -41,7 +41,10 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Map
+  - name: Buildings
+    uniqueID: 358601147
+    locked: 0
+  - name: CanNotPath
     uniqueID: 828369261
     locked: 0
   - name: Chara

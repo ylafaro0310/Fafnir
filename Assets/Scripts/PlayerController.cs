@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharaController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public readonly float SPEED = 0.1f;
     private Rigidbody2D rigidBody;
     private Vector2 input;
     Animator animator;
+    public LayerMask interactableLayer;
 
     // Start is called before the first frame update
     void Start()
@@ -17,7 +18,7 @@ public class CharaController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void HandleUpdate()
     {
         if (Input.anyKeyDown) {
             Vector2? action = this.actionKeyDown();
@@ -33,13 +34,24 @@ public class CharaController : MonoBehaviour
             (int)Input.GetAxis("Vertical")); 
 
         setStateToAnimator(vector: input != Vector2.zero? input : (Vector2?)null);  
+
+        if (input != Vector2.zero) {
+            rigidBody.position += input * SPEED;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Z)){
+            Interact();
+        }
     }
 
-    private void FixedUpdate() {
-        if (input == Vector2.zero) {
-            return;
+    void Interact(){
+        var facingDir = new Vector3(animator.GetFloat("x"), animator.GetFloat("y"));
+        var interactPos = transform.position + facingDir;
+
+        var collider = Physics2D.OverlapCircle(interactPos, 0.3f, interactableLayer);
+        if(collider != null){
+            collider.GetComponent<Interactable>()?.Interact();
         }
-        rigidBody.position += input * SPEED;
     }
 
     /**
@@ -52,7 +64,6 @@ public class CharaController : MonoBehaviour
             return;
         }
 
-        Debug.Log(vector.Value);
         this.animator.speed = 1.0f;
         this.animator.SetFloat("x", vector.Value.x);
         this.animator.SetFloat("y", vector.Value.y);
